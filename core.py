@@ -24,6 +24,23 @@ class Value:
             other.grad += self.data * out.grad 
         out._backward = _backward 
         return out
+        
+    def __pow__(self, other):
+        assert isinstance(other, (int, float)), "Hiện tại chỉ hỗ trợ số mũ int/float"
+        out = Value(self.data**other, (self,))
+        def _backward():
+            self.grad += (other * self.data**(other-1)) * out.grad
+        out._backward = _backward
+        return out
+
+    def __sub__(self, other):
+        other = other if isinstance(other, Value) else Value(other)
+        out = Value(self.data - other.data, (self, other))
+        def _backward():
+            self.grad += 1.0 * out.grad
+            other.grad -= 1.0 * out.grad
+        out._backward = _backward
+        return out
 
     def backward(self):
         topo = []
