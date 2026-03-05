@@ -69,6 +69,7 @@ beta1, beta2, eps = 0.9, 0.999, 1e-8
 print("Tìm đáy bát với Adam...")
 
 for epoch in range(1, 101):
+    
     loss = x*x + y*y
 
     x.grad = 0.0
